@@ -1,0 +1,88 @@
+/*
+ * Steps to create a extent report in BDD-Cucumber-Junit Frameweor:
+ * 1. Add below dependencies.
+	2. Create extent-config.xml file. See inside src/test/java;
+	3. Add the plugin options in @CucumberOptions where you have declare the output html file path;
+	4. Create @AfterClass inside testrunner and load the xml file;
+ * */
+ 
+ --------------------Dependencies---------------------------
+ 			<dependency>
+			<groupId>com.aventstack</groupId>
+			<artifactId>extentreports</artifactId>
+			<version>3.0.6</version>
+			</dependency>
+			
+			<dependency>
+			<groupId>com.vimalselvam</groupId>
+			<artifactId>cucumber-extentsreport</artifactId>
+			<version>3.0.2</version>
+			</dependency>
+ -----------------------------------------------------------
+ ---------------Runner Class-------------------------------
+@RunWith(Cucumber.class)
+@CucumberOptions(
+		features={"C:\\Users\\User\\workspace\\CucumberPratcingRemove\\feature.feature"},
+		plugin={"com.cucumber.listener.ExtentCucumberFormatter:target/html/ExtentReport.html"},
+		glue="tt"	
+		)
+public class RunnerTest {
+	
+	@AfterClass
+	public static void setup()
+	{
+	Reporter.loadXMLConfig(new File("C:\\Users\\User\\workspace\\CucumberExtentJunit\\src\\test\\java\\Tests\\extent-config.xml"));
+	//Reporter.setSystemInfo("Test User", System.getProperty("user.name"));
+	Reporter.setSystemInfo("User Name", "AJ");
+	Reporter.setSystemInfo("Application Name", "Test App ");
+	Reporter.setSystemInfo("Operating System Type", System.getProperty("os.name").toString());
+	Reporter.setSystemInfo("Environment", "Production");
+	Reporter.setTestRunnerOutput("Test Execution Cucumber Report");
+	}
+ -------------------------------------------------------
+ --------------Extent-config.xml file-----------------------
+ <?xml version="1.0" encoding="UTF-8"?>
+<extentreports>
+<configuration>
+<!-- report theme -->
+
+<!-- standard, dark -->
+
+<theme>standard</theme>
+<!-- document encoding -->
+
+<!-- defaults to UTF-8 -->
+
+<encoding>UTF-8</encoding>
+<!-- protocol for script and stylesheets -->
+
+<!-- defaults to https -->
+
+<protocol>http</protocol>
+<!-- title of the document -->
+<documentTitle>Extent</documentTitle>
+<!-- report name - displayed at top-nav -->
+
+<reportName>Cucumber Report</reportName>
+<!-- location of charts in the test view -->
+
+<!-- top, bottom -->
+
+<testViewChartLocation>bottom</testViewChartLocation>
+<!-- custom javascript -->
+
+<scripts>
+
+<![CDATA[
+$(document).ready(function() {
+});
+]]>
+</scripts>
+<!-- custom styles -->
+<styles>
+<![CDATA[
+]]>
+</styles>
+</configuration>
+</extentreports>
+ -------------------------------------
